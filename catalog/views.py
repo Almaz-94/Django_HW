@@ -12,3 +12,5 @@ def contacts(request):
         print(name, phone,'\n',message)
     return render(request, 'catalog/contacts.html')
 
+def catalog(request):
+    return render(request,'catalog/catalog.html')
