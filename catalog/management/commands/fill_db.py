@@ -20,3 +20,6 @@ class Command(BaseCommand):
         product_for_creation = [Product(**product) for product in product_list]
         Product.objects.all().delete()
         Product.objects.bulk_create(product_for_creation)
+
+# {% url 'catalog:product' object.pk %}
+# /product/{{ object.pk }}
