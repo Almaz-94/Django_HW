@@ -5,3 +5,5 @@ tzdata==2023.3
 pillow
 ipython
 psycopg2
+pytils~=0.4.1
+python-dotenv~=1.0.0

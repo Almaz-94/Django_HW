@@ -1,14 +1,18 @@
 from django.shortcuts import render
 from catalog.models import Product,Category
-# Create your views here.
+from django.views.generic import ListView,DetailView
 
-def home(request):
-    product_list = Product.objects.all()
-    context = {
-        'object_list' : product_list,
-        'title' : 'Home page'
-    }
-    return render(request, 'catalog/home.html', context)
+
+class ProductListView(ListView):
+    model = Product
+    template_name = 'catalog/home.html'
+# def home(request):
+#     product_list = Product.objects.all()
+#     context = {
+#         'object_list' : product_list,
+#         'title' : 'Home page'
+#     }
+#     return render(request, 'catalog/home.html', context)
 
 def contacts(request):
     if request.method == 'POST':
@@ -21,10 +25,15 @@ def contacts(request):
     }
     return render(request, 'catalog/contacts.html', context)
 
-def product(request, id):
-    product_obj = Product.objects.get(pk=id)
-    context = {
-        'object' : product_obj,
-        'title' : product_obj.name
-    }
-    return render(request,'catalog/product.html', context)
+
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = 'catalog/product.html'
+
+# def product(request, id):
+#     product_obj = Product.objects.get(pk=id)
+#     context = {
+#         'object' : product_obj,
+#         'title' : product_obj.name
+#     }
+#     return render(request,'catalog/product.html', context)

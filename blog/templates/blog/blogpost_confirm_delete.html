@@ -1,0 +1,19 @@
+{% extends 'catalog/base.html' %}
+
+{% block content %}
+<div class="col-lg-5 col-md-6 col-sm-12">
+    <div class="card mb-7 box-shadow">
+
+        <div class="card-body">
+            <form method="post" action="" class="form-floating">
+                {% csrf_token %}
+                <p>Подтвердите удаление поста "{{object.title}}"</p>
+                <button type="submit" class="btn btn-danger">Delete</button>
+                <a href="{% url 'blog:list' %}" class="btn btn-success">Cancel</a>
+            </form>
+
+
+        </div>
+    </div>
+</div>
+{% endblock %}
