@@ -48,12 +48,15 @@
                                 <div class="card-footer">{{object.view_count}} Просмотров</div>
                             </div>
                         </div>
-                        <img src="{{ object.image|mediapath }}"/>
+
                     </div>
 
                 </div>
+                <div class="col-6">
+                    <img src="{{ object.image|mediapath }}"/>
+                </div>
             </div>
-        </div>
+        </div></div>
 </main>
 
 {% endblock %}
