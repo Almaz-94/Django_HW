@@ -2,29 +2,34 @@
 {% block content %}
 <div class="container" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
     <div class="row text-center">
-        <div class="col-12">
+        <div class="col-6">
             <h1 class="my-0 font-weight-normal">Неудобный сервис для ведения блога</h1>
             <div class="card mb-5 box-shadow">
                 <div class="card-header">
                     <h3 class="card-title pricing-card-title">Лента</h3>
                 </div>
+                {% for object in object_list %}
                 <div class="card-body">
-                    {% for object in object_list %}
+
                     <ul class="list-unstyled mt-3 mb-4 text-start m-4">
                         <li><a class="text-muted" href="{% url 'blog:post' object.pk %}">{{ object.title }}</a>
                         </li>
                     </ul>
                     <div class="btn-group">
                         <a href="{% url 'blog:post' object.pk %}">
-                        <button type="button" class="btn  btn-outline-secondary">View</button></a>
+                            <button type="button" class="btn  btn-outline-secondary">View</button>
+                        </a>
                         <a href="{% url 'blog:update' object.pk %}">
-                        <button type="button" class="btn btn-sm btn-outline-secondary">Update</button></a>
+                            <button type="button" class="btn btn-sm btn-outline-secondary">Update</button>
+                        </a>
                         <a href="{% url 'blog:delete' object.pk %}">
-                        <button type="button" class="btn btn-sm btn-outline-secondary">Delete</button></a>
+                            <button type="button" class="btn btn-sm btn-outline-secondary">Delete</button>
+                        </a>
                     </div>
                     <small class="text-body-secondary">{{object.creation_date}}</small>
-                    {% endfor %}
+
                 </div>
+                {% endfor %}
             </div>
             <a class="btn btn-primary" href="{% url 'blog:create' %}">Сделать запись в блог</a>
         </div>
