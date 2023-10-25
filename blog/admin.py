@@ -2,8 +2,6 @@ from django.contrib import admin
 from blog.models import BlogPost
 
 # Register your models here.
-# admin.site.register(Product)
-# admin.site.register(Category)
 
 @admin.register(BlogPost)
 class ProductAdmin(admin.ModelAdmin):
