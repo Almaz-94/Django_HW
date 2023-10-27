@@ -1,0 +1,41 @@
+{% extends 'catalog/base.html' %}
+{% block content %}
+<div class="container" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+    <div class="row text-center">
+        <div class="col-6">
+            <h1 class="my-0 font-weight-normal">Сервис для создания рассылок</h1>
+            <div class="card mb-5 box-shadow">
+                <div class="card-header">
+                    <h3 class="card-title pricing-card-title">Лента</h3>
+                    <a class="btn btn-primary" href="{% url 'newsletter:create' %}">Создать рассылку</a>
+                </div>
+                {% for object in object_list %}
+                <div class="card-body">
+
+                    <ul class="list-unstyled mt-3 mb-4 text-start m-4">
+                        <li><a class="text-muted" href="{% url 'newsletter:read' object.pk %}">{{ object.start }} - {{ object.end }}</a>
+                        </li>
+                    </ul>
+                    <div class="btn-group">
+                        <a href="{% url 'newsletter:read' object.pk %}">
+                            <button type="button" class="btn  btn-outline-secondary">View</button>
+                        </a>
+                        <a href="{% url 'newsletter:update' object.pk %}">
+                            <button type="button" class="btn btn-sm btn-outline-secondary">Update</button>
+                        </a>
+                        <a href="{% url 'newsletter:delete' object.pk %}">
+                            <button type="button" class="btn btn-sm btn-outline-secondary">Delete</button>
+                        </a>
+                    </div>
+
+
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+    </div>
+
+
+    {% endblock %}

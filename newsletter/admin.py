@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from newsletter.models import Newsletter, Letter, Client, NLStatus, NLLogs
+from newsletter.models import Newsletter, Letter, Client,  NLLogs #NLStatus,
 
 # Register your models here.
 
@@ -15,9 +15,9 @@ class LetterAdmin(admin.ModelAdmin):
     list_display = ('pk','head','body')
     search_fields = ('head','body')
 
-@admin.register(NLStatus)
-class NKStatusAdmin(admin.ModelAdmin):
-    list_display = ('status',)
+# @admin.register(NLStatus)
+# class NKStatusAdmin(admin.ModelAdmin):
+#     list_display = ('status',)
 
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
@@ -26,5 +26,5 @@ class ClientAdmin(admin.ModelAdmin):
 
 @admin.register(NLLogs)
 class NLLogs(admin.ModelAdmin):
-    readonly_fields = ('last_try', 'server_response','status')
+    readonly_fields = ('last_try', 'server_response')#,'status')
     list_display = ('newsletter',)
