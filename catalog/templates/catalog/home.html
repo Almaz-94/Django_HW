@@ -2,22 +2,36 @@
 {% block content %}
 <div class="container">
     <div class="row text-center">
-        <div class="col-3">
+        <div class="col-12">
             <div class="card mb-4 box-shadow">
                 <div class="card-header">
-                    <h4 class="my-0 font-weight-normal">Удобный сервис рассылок</h4>
+                    <h4 class="my-0 font-weight-normal">Интернет магазин</h4>
                 </div>
                 <div class="card-body">
                     <h1 class="card-title pricing-card-title">В продаже</h1>
-                    {% for object in object_list %}
+                    <div class="col-12 mb-4">
+                        <a class="btn btn-primary" href="{% url 'catalog:create_product' %}">Добавить продукт</a>
+                    </div>
+
 
                     <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                        {% for object in object_list %}
                         <li><a class="text-muted" href="{% url 'catalog:product' object.pk %}">{{ object.name }}</a>
+                            {% for version in object.version_set.all %}
+                            {% if version.is_current %}
+                            <p class="card-text">Версия: {{ version.version_number }} - {{ version.version_name }}</p>
+                            {% endif %}
+                            {% endfor %}
                         </li>
+                        <div class="btn-group">
+                            <a href="{% url 'catalog:update_product' object.pk %}" type="button" class=" btn  btn-outline-primary">Edit</a>
+                            <a href="{% url 'catalog:delete_product' object.pk %}" type="button" class=" btn  btn-outline-danger">Delete</a>
+                        </div>
+                        {% endfor %}
 
                     </ul>
-                    <!--                    <button type="button" class="btn btn-lg btn-block btn-outline-primary">Купить</button>-->
-                    {% endfor %}
+                    <!--                   -->
+
                 </div>
             </div>
         </div>

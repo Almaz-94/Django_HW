@@ -137,3 +137,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'skylanser28.10.94@gmail.com'
+EMAIL_HOST_PASSWORD = os.getenv('gmail_pass')
+DEFAULT_FROM_EMAIL = 'Almazz'
+DEFAULT_TO_EMAIL = 'almaz28-10@mail.ru'

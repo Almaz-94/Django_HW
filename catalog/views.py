@@ -1,18 +1,12 @@
 from django.shortcuts import render
-from catalog.models import Product,Category
-from django.views.generic import ListView,DetailView
-
+from catalog.models import Product, Category
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from catalog.forms import ProductForm
 
 class ProductListView(ListView):
     model = Product
     template_name = 'catalog/home.html'
-# def home(request):
-#     product_list = Product.objects.all()
-#     context = {
-#         'object_list' : product_list,
-#         'title' : 'Home page'
-#     }
-#     return render(request, 'catalog/home.html', context)
 
 def contacts(request):
     if request.method == 'POST':
@@ -37,3 +31,17 @@ class ProductDetailView(DetailView):
 #         'title' : product_obj.name
 #     }
 #     return render(request,'catalog/product.html', context)
+
+class ProductCreateView(CreateView):
+    model = Product
+    form_class = ProductForm
+    success_url = reverse_lazy('catalog:home')
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    form_class = ProductForm
+    success_url = reverse_lazy('catalog:home')
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    success_url = reverse_lazy('catalog:home')
