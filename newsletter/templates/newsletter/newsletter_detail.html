@@ -32,7 +32,9 @@
                             <div class="card-body">
                                 <p class="card-text">С: {{ object.start }}</p>
                                 <p class="card-text">По: {{ object.end }}</p>
-                                <p class="card-text">Адресаты: {{ object.client }}</p>
+                                {% for  obj in object.client.all %}
+                                <p class="card-text">{{ obj.email }}</p>
+                                {% endfor %}
                                 <p class="card-text">Статус: {{ object.status }}</p>
                                 <p class="card-text">Письмо: {{ object.letter }}</p>
                                 <div class="d-flex justify-content-between align-items-center">

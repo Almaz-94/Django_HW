@@ -1,4 +1,9 @@
 from django.db import models
+from datetime import datetime
+
+
+from apscheduler.schedulers.background import BackgroundScheduler
+from django.core.mail import send_mail
 
 
 NULLABLE = {'blank':True, 'null':True}
@@ -9,7 +14,7 @@ class Client(models.Model):
     comment = models.TextField(verbose_name='Комментарий',**NULLABLE)
 
     def __str__(self):
-        return f'{self.name} - {self.email}'
+        return self.email
 
     class Meta:
         verbose_name = 'Клиент'
@@ -40,16 +45,29 @@ class Newsletter(models.Model):
     start = models.DateField(verbose_name='с')
     end = models.DateField(verbose_name='по')
     period = models.PositiveSmallIntegerField(default=7)
-    client = models.ManyToManyField(Client, verbose_name='Клиенты', related_name='newsletter')
+    client = models.ManyToManyField(Client, verbose_name='Клиенты')#, related_name='newsletter')
     #status = models.ForeignKey(NLStatus, on_delete=models.DO_NOTHING, verbose_name='Статус')
-    status = models.CharField(max_length=30,default='CRE', verbose_name='Статус', choices=[
+    status = models.CharField(max_length=30, default='CRE', verbose_name='Статус', choices=[
         ('CRE','Создана'),
         ('ONG',"Запушена"),
         ('END',"Завершена")])
+    # last_sent = models.DateField(verbose_name="Отправлено в предыдущий раз",**NULLABLE)
     letter = models.ForeignKey(Letter, on_delete=models.CASCADE, verbose_name='Письмо рассылки')
 
     def __str__(self):
         return f'{self.start} - {self.end} once every {self.period} days'
+
+    def send_mail_periodically(self):
+        def send():
+            ...
+            #print(list(self.client.all()))
+            # send_mail(self.letter.head, self.letter.body,
+            #           'skylanser28.10.94@gmail.com',
+            #           list(self.client.all()), fail_silently=False)
+        scheduler = BackgroundScheduler()
+        scheduler.add_job(send, 'interval', start_date=self.start, end_date=self.end, seconds=20)#days=self.period)
+        scheduler.start()
+
 
     class Meta:
         verbose_name = 'Рассылка'
@@ -60,6 +78,10 @@ class NLLogs(models.Model):
     server_response = models.PositiveSmallIntegerField(verbose_name='Ответ сервера',**NULLABLE)
     newsletter = models.ForeignKey(Newsletter, on_delete=models.CASCADE, verbose_name= 'Рассылка')
     #status = models.ForeignKey(NLStatus, on_delete=models.DO_NOTHING, verbose_name='Статус',**NULLABLE)
+
+    def email_last_try(self):
+        self.last_try.update
+
 
     def __str__(self):
         return f'{self.newsletter}, last tried {self.last_try} with {self.server_response} response'
