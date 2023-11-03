@@ -13,7 +13,8 @@ class ProductForm(StyleFormMixin,forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = '__all__'
+        #fields = '__all__'
+        exclude = ('creator',)
 
     def clean_name(self):
         bad_words = ['казино', 'криптовалюта', 'крипта', 'биржа', 'дешево', 'бесплатно', 'обман', 'полиция', 'радар']

@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.utils import timezone
 from django.dispatch import receiver
@@ -26,6 +27,8 @@ class Product(models.Model):
     price = models.IntegerField()
     creation_date = models.DateField(auto_now_add=True,**NULLABLE)
     last_change_date = models.DateField(auto_now=True,**NULLABLE)
+    creator = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='создатель', on_delete=models.SET_NULL, **NULLABLE)
+
 
     def __str__(self):
         return f'Product {self.name} in {self.category}'

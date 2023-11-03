@@ -1,0 +1,43 @@
+{% extends 'catalog/base.html' %}
+{% load my_tags_blog %}
+{% block content %}
+
+<main>
+    <div class="album py-5 bg-body-tertiary">
+        <div class="container">
+            <div class="center">
+                <div class="row">
+                <div class="col-6">
+                    <div class="card shadow-sm">
+                        <div class="card mb-5 box-shadow">
+                            <div class="card-header">
+                                <h3 class="card-title pricing-card-title">{{ object.email }}</h3>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">Code: {{ object.verification_code }}</p>
+
+                                <p class="card-text">Verified: {{ object.verified }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+
+
+                                </div>
+
+                            </div>
+                            <div class="card-footer">
+                                <a href="{% url 'users:generate_new_password' %}" class="btn btn-danger">Сменить пароль</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col-6">
+                    <img src="{{ object.avatar|mediapath }}" width="600"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</main>
+
+{% endblock %}

@@ -19,6 +19,7 @@
                             <p class="card-text">Название: {{ object.name }}</p>
                             <p class="card-text">Описание: {{ object.description }}</p>
                             <p class="card-text">Категория: {{ object.category.name }}</p>
+                            <p class="card-text">Создатель: {{ object.creator|default:'N/A' }}</p>
 
                             {% for version in object.version_set.all %}
                             {% if version.is_current %}

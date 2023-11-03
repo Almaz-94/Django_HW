@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'catalog',
     'blog',
     'newsletter',
+    'users',
 
 ]
 
@@ -145,3 +146,7 @@ EMAIL_HOST_USER = 'skylanser28.10.94@gmail.com'
 EMAIL_HOST_PASSWORD = os.getenv('gmail_pass')
 DEFAULT_FROM_EMAIL = 'Almazz'
 DEFAULT_TO_EMAIL = 'almaz28-10@mail.ru'
+
+AUTH_USER_MODEL = 'users.User'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = "/"

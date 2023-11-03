@@ -8,6 +8,11 @@ class ProductListView(ListView):
     model = Product
     template_name = 'catalog/home.html'
 
+    # def get_queryset(self, *args, **kwargs):
+    #     queryset = super().get_queryset(*args, **kwargs)
+    #     queryset = queryset.filter(creator = self.request.user)
+    #     return queryset
+
 def contacts(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -37,6 +42,11 @@ class ProductCreateView(CreateView):
     form_class = ProductForm
     success_url = reverse_lazy('catalog:home')
 
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.creator = self.request.user
+        self.object.save()
+        return super().form_valid(form)
 class ProductUpdateView(UpdateView):
     model = Product
     form_class = ProductForm
