@@ -83,7 +83,7 @@ dotenv.load_dotenv()
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'my_db',
+        'NAME': 'my_db', #'debugdb',#
         'USER': 'postgres',
         'PASSWORD': os.getenv('PASSWORD')
     }
