@@ -7,42 +7,52 @@
     <div class="album py-5 bg-body-tertiary">
         <div class="container">
             <div class="center">
-                <div class="col-6">
-                    <div class="card shadow-sm mb-2">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="card shadow-sm mb-2">
 
-                        <div class="card-header">
-                            <div class="card-title">
-                                Продукт №{{ object.pk }}
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <p class="card-text">Название: {{ object.name }}</p>
-                            <p class="card-text">Описание: {{ object.description }}</p>
-                            <p class="card-text">Категория: {{ object.category.name }}</p>
-                            <p class="card-text">Создатель: {{ object.creator|default:'N/A' }}</p>
-
-                            {% for version in object.version_set.all %}
-                            {% if version.is_current %}
-                            <p class="card-text">Версия: {{ version.version_number }} - {{ version.version_name }}</p>
-                            {% endif %}
-                            {% endfor %}
-
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
-
-                                    <a href="{% url 'catalog:update_product' object.pk %}" type="button"
-                                       class="btn btn-sm btn-outline-secondary">Edit</a>
-                                    <a href="{% url 'catalog:delete_product' object.pk %}" type="button"
-                                       class="btn btn-sm btn-outline-secondary">Delete</a>
+                            <div class="card-header">
+                                <div class="card-title">
+                                    Продукт №{{ object.pk }}
                                 </div>
-                                <small class="text-body-secondary">{{object.creation_date}}</small>
                             </div>
-                        </div>
+                            <div class="card-body">
+                                <p class="card-text">Название: {{ object.name }}</p>
+                                <p class="card-text">Описание: {{ object.description }}</p>
+                                <p class="card-text">Категория: {{ object.category.name }}</p>
+                                <p class="card-text">Создатель: {{ object.creator|default:'N/A' }}</p>
 
+                                {% for version in object.version_set.all %}
+                                {% if version.is_current %}
+                                <p class="card-text">Версия: {{ version.version_number }} - {{ version.version_name
+                                    }}</p>
+                                {% endif %}
+                                {% endfor %}
+
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        {% if object.creator.email == user.email or user.is_superuser %}
+                                        <a href="{% url 'catalog:update_product' object.pk %}" type="button"
+                                           class=" btn  btn-outline-primary">Edit</a>
+                                        {% endif %}
+                                        {% if perms.catalog.change_product %}
+                                        <a href="{% url 'catalog:managers_update_product' object.pk %}" type="button"
+                                           class=" btn  btn-outline-success">Moderator edit</a>
+                                        {% endif %}
+                                        {% if object.creator.email == user.email or perms.catalog.delete_product %}
+                                        <a href="{% url 'catalog:delete_product' object.pk %}" type="button"
+                                           class="btn btn-outline-danger">Delete</a>
+                                        {% endif %}
+                                    </div>
+                                    <small class="text-body-secondary">{{object.creation_date}}</small>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
-                </div>
-                <div class="col-6">
-                    <img src="{{ object.image|mediapath }}" width="500"/>
+                    <div class="col-6">
+                        <img src="{{ object.image|mediapath }}" width="500"/>
+                    </div>
                 </div>
             </div>
         </div>

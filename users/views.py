@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, DetailView
@@ -14,11 +15,11 @@ from random import randint
 
 class LoginView(BaseLoginView):
     template_name = 'users/login.html'
-    success_url = reverse_lazy('catalog:home')
+    #success_url = reverse_lazy('catalog:home')
 
 
 class LogoutView(BaseLogoutView):
-    template_name = 'users/logout.html'
+    pass
 
 
 class RegisterView(CreateView):
@@ -30,7 +31,8 @@ class RegisterView(CreateView):
     def form_valid(self, form):
 
         new_user = form.save()
-        ver_num = randint(1000,1000000)
+        new_user.is_active = False
+        ver_num = randint(1000, 1000000)
         new_user.verification_code = ver_num
         new_user.save()
         send_mail(
@@ -48,14 +50,15 @@ def verify(request):
         number = request.POST.get('number')
     try:
         user = User.objects.get(verification_code=number)
-        user.verified = True
+        #user.verified = True
+        user.is_active = True
         user.save()
         return redirect(reverse('users:login'))
     except:
         return render(request, 'users/verification.html')
 
 
-class UserDetailView(DetailView):
+class UserDetailView(LoginRequiredMixin, DetailView):
     model = User
 
     def get_object(self, queryset=None):

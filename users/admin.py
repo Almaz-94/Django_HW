@@ -6,4 +6,4 @@ from users.models import User
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('email','verified','verification_code',)
+    list_display = ('email', 'verification_code',)

@@ -9,12 +9,11 @@ class StyleFormMixin:
             field.widget.attrs['class'] = 'form-control'
 
 
-class ProductForm(StyleFormMixin,forms.ModelForm):
+class ProductForm(StyleFormMixin, forms.ModelForm):
 
     class Meta:
         model = Product
-        #fields = '__all__'
-        exclude = ('creator',)
+        exclude = ('creator', 'is_approved')
 
     def clean_name(self):
         bad_words = ['казино', 'криптовалюта', 'крипта', 'биржа', 'дешево', 'бесплатно', 'обман', 'полиция', 'радар']
@@ -23,3 +22,9 @@ class ProductForm(StyleFormMixin,forms.ModelForm):
             raise forms.ValidationError('Использовано недопустимое слово в названии')
 
         return cleaned_data
+
+
+class ProductFormManagers(StyleFormMixin, forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ('description', 'category', 'is_approved')
