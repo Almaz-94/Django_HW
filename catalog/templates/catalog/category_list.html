@@ -1,0 +1,26 @@
+{% extends 'catalog/base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row text-center">
+        <div class="col-12">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">Интернет магазин</h4>
+                </div>
+                <div class="card-body">
+                    <h2 class="card-title pricing-card-title">Доступные категории</h2>
+                    <div class="card mb-4 box-shadow">
+                        {% for object in object_list %}
+                        <div class="card-body">
+                            <h4 class="my-0 font-weight-normal">{{ object.name }}</h4>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

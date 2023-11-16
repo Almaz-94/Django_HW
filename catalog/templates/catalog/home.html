@@ -13,6 +13,7 @@
 
                     <div class="col-12 mb-4">
                         <a class="btn btn-primary" href="{% url 'catalog:create_product' %}">Добавить продукт</a>
+                        <a class="btn btn-primary" href="{% url 'catalog:categories' %}">Список категорий</a>
                     </div>
                     
 
@@ -39,7 +40,7 @@
                                            class=" btn  btn-outline-primary">Edit</a>
                                         {% endif %}
                                         {% if perms.catalog.change_product  %}
-                                        <a href="{% url 'catalog:managers_update_product' object.pk %}" type="button"
+                                        <a href="{% url 'catalog:moderator_update_product' object.pk %}" type="button"
                                            class=" btn  btn-outline-success">Moderator edit</a>
                                         {% endif %}
                                         {% if object.creator.email == user.email or perms.catalog.delete_product %}

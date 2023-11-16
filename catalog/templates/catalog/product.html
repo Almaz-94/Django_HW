@@ -24,8 +24,8 @@
 
                                 {% for version in object.version_set.all %}
                                 {% if version.is_current %}
-                                <p class="card-text">Версия: {{ version.version_number }} - {{ version.version_name
-                                    }}</p>
+                                <p class="card-text">
+                                    Версия: {{ version.version_number }}- {{ version.version_name}}</p>
                                 {% endif %}
                                 {% endfor %}
 
@@ -36,7 +36,7 @@
                                            class=" btn  btn-outline-primary">Edit</a>
                                         {% endif %}
                                         {% if perms.catalog.change_product %}
-                                        <a href="{% url 'catalog:managers_update_product' object.pk %}" type="button"
+                                        <a href="{% url 'catalog:moderator_update_product' object.pk %}" type="button"
                                            class=" btn  btn-outline-success">Moderator edit</a>
                                         {% endif %}
                                         {% if object.creator.email == user.email or perms.catalog.delete_product %}

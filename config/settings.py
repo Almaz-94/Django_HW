@@ -83,9 +83,9 @@ dotenv.load_dotenv()
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'my_db', #'debugdb',#
+        'NAME': 'my_db',
         'USER': 'postgres',
-        'PASSWORD': os.getenv('PASSWORD')
+        'PASSWORD': os.getenv('DB_PASSWORD')
     }
 }
 
@@ -142,12 +142,21 @@ MEDIA_ROOT = BASE_DIR / 'media'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'skylanser28.10.94@gmail.com'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('gmail_pass')
-DEFAULT_FROM_EMAIL = 'Almazz'
+DEFAULT_FROM_EMAIL = os.getenv('default_email_author')
 DEFAULT_TO_EMAIL = 'almaz28-10@mail.ru'
 
 AUTH_USER_MODEL = 'users.User'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = "/"
 LOGIN_URL = '/users/'
+
+
+CACHE_ENABLED = True
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379",
+    }
+}
