@@ -1,16 +1,31 @@
+import random
+
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 from django.http import Http404
 from django.shortcuts import render
+
+from blog.models import BlogPost
 from catalog.models import Product, Category
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from catalog.forms import ProductForm, ProductFormManagers
 from catalog.services import get_category_list
+from newsletter.models import Newsletter, Client
 
 
 class ProductListView(LoginRequiredMixin, ListView):
     model = Product
-    template_name = 'catalog/home.html'
+    template_name = 'catalog/product_list.html'
+
+
+def main_page(request):
+    context = {
+        'blogpost_random3': random.sample(list(BlogPost.objects.all()), k=3),
+        'newsletter': Newsletter.objects.all,
+        'active_newsletter': Newsletter.objects.filter(is_active=True),
+        'unique_client': Client.objects.all()
+    }
+    return render(request, 'catalog/home.html', context)
 
 
 def contacts(request):
@@ -33,9 +48,8 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
 class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
-    success_url = reverse_lazy('catalog:home')
+    success_url = reverse_lazy('catalog:product_list')
 
-    # permission_required = 'catalog.add_product'
     def form_valid(self, form):
         self.object = form.save()
         self.object.creator = self.request.user
@@ -46,7 +60,7 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
 class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
-    success_url = reverse_lazy('catalog:home')
+    success_url = reverse_lazy('catalog:product_list')
 
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
@@ -57,7 +71,7 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
 
 class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
-    success_url = reverse_lazy('catalog:home')
+    success_url = reverse_lazy('catalog:product_list')
 
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
@@ -71,7 +85,7 @@ class ProductManagersUpdate(PermissionRequiredMixin, UserPassesTestMixin, Update
     form_class = ProductFormManagers
     permission_required = 'catalog.change_product'
 
-    success_url = reverse_lazy('catalog:home')
+    success_url = reverse_lazy('catalog:product_list')
 
     def test_func(self):
         return self.request.user.is_staff

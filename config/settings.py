@@ -83,7 +83,7 @@ dotenv.load_dotenv()
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'my_db',
+        'NAME': 'debugdb', #'django_db', #'my_db',
         'USER': 'postgres',
         'PASSWORD': os.getenv('DB_PASSWORD')
     }
@@ -149,7 +149,7 @@ DEFAULT_TO_EMAIL = 'almaz28-10@mail.ru'
 
 AUTH_USER_MODEL = 'users.User'
 LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = '/users/'
 
 

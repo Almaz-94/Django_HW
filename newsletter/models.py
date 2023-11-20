@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import datetime
+from django.conf import settings
 
 
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -7,7 +8,8 @@ from django.core.mail import send_mail
 
 
 NULLABLE = {'blank':True, 'null':True}
-# Create your models here.
+
+
 class Client(models.Model):
     name = models.CharField(max_length=100, verbose_name='ФИО', **NULLABLE)
     email = models.EmailField(verbose_name='Почта', unique=True)
@@ -42,17 +44,23 @@ class Letter(models.Model):
         verbose_name_plural = 'Письма'
 
 class Newsletter(models.Model):
-    start = models.DateField(verbose_name='с')
-    end = models.DateField(verbose_name='по')
-    period = models.PositiveSmallIntegerField(default=7)
-    client = models.ManyToManyField(Client, verbose_name='Клиенты')#, related_name='newsletter')
+    start = models.DateField(verbose_name='начало')
+    end = models.DateField(verbose_name='конец')
+    period = models.PositiveSmallIntegerField(default=7, verbose_name='периодичность в днях')
+    client = models.ManyToManyField(Client, verbose_name='Клиенты рассылки')#, related_name='newsletter')
     #status = models.ForeignKey(NLStatus, on_delete=models.DO_NOTHING, verbose_name='Статус')
+    creator = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                verbose_name='создатель',
+                                on_delete=models.SET_NULL,
+                                **NULLABLE)
+
     status = models.CharField(max_length=30, default='CRE', verbose_name='Статус', choices=[
         ('CRE','Создана'),
         ('ONG',"Запушена"),
         ('END',"Завершена")])
     # last_sent = models.DateField(verbose_name="Отправлено в предыдущий раз",**NULLABLE)
     letter = models.ForeignKey(Letter, on_delete=models.CASCADE, verbose_name='Письмо рассылки')
+    is_active = models.BooleanField(default=False, verbose_name='Активна')
 
     def __str__(self):
         return f'{self.start} - {self.end} once every {self.period} days'
@@ -61,11 +69,11 @@ class Newsletter(models.Model):
         def send():
             ...
             #print(list(self.client.all()))
-            # send_mail(self.letter.head, self.letter.body,
-            #           'skylanser28.10.94@gmail.com',
-            #           list(self.client.all()), fail_silently=False)
+            send_mail(self.letter.head, self.letter.body,
+                      'skylanser28.10.94@gmail.com',
+                      list(self.client.all()), fail_silently=False)
         scheduler = BackgroundScheduler()
-        scheduler.add_job(send, 'interval', start_date=self.start, end_date=self.end, seconds=20)#days=self.period)
+        scheduler.add_job(send, 'interval', start_date=self.start, end_date=self.end, days=self.period)  # seconds=30)#
         scheduler.start()
 
 

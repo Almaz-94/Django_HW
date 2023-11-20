@@ -1,0 +1,24 @@
+{% extends 'catalog/base.html' %}
+
+{% block content %}
+<div class="col-lg-5 col-md-6 col-sm-12">
+    <div class="card mb-7 box-shadow">
+        <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Профиль пользователя</h4>
+            <h4 class="my-0 font-weight-normal">{{ object.email }}</h4>
+        </div>
+        <div class="card-body">
+            <form method="post" action="" class="form-floating" enctype="multipart/form-data">
+
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-success">Сохранить</button>
+
+                <a class="p-2 btn btn-outline-primary" href="{% url 'users:profile' object.pk %}">Отмена</a>
+            </form>
+
+
+        </div>
+    </div>
+</div>
+{% endblock %}

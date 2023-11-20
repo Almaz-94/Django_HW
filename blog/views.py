@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import CreateView,DetailView,DeleteView,UpdateView,ListView
 from blog.models import BlogPost
 from django.urls import reverse_lazy, reverse
@@ -17,7 +17,8 @@ class BlogpostCreateView(LoginRequiredMixin, CreateView):
             new.save()
         return super().form_valid(form)
 
-class BlogpostUpdateView(LoginRequiredMixin, UpdateView):
+
+class BlogpostUpdateView(UserPassesTestMixin, UpdateView):
     model = BlogPost
     fields = ('title', 'text', 'published', 'image')
     # success_url = reverse_lazy('blog:list')
@@ -32,8 +33,11 @@ class BlogpostUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('blog:post', args=[self.kwargs.get('pk')])
 
+    def test_func(self):
+        return self.request.user.is_staff
 
-class BlogpostListView(LoginRequiredMixin, ListView):
+
+class BlogpostListView(ListView):
     model = BlogPost
 
     def get_queryset(self, *args, **kwargs):

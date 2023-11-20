@@ -7,42 +7,44 @@
         <div class="container">
             <div class="center">
                 <div class="row">
-                <div class="col-6">
-                    <div class="card shadow-sm">
-                        <div class="card mb-5 box-shadow">
-                            <div class="card-header">
-                                <h3 class="card-title pricing-card-title">{{ object.title }}</h3>
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text">Slug: {{ object.slug }}</p>
-                                <p class="card-text">Содержание: {{ object.text }}</p>
-                                <p class="card-text">Опубликовано: {{ object.published }}</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="btn-group">
-                                        <a href="{% url 'blog:update' object.pk %}">
-                                            <button type="button" class="btn btn-sm btn-outline-secondary">Update
-                                            </button>
-                                        </a>
-                                        <a href="{% url 'blog:delete' object.pk %}">
-                                            <button type="button" class="btn btn-sm btn-outline-secondary">Delete
-                                            </button>
-                                        </a>
-                                    </div>
-                                    <small class="text-body-secondary">{{object.creation_date}}</small>
+                    <div class="col-6">
+                        <div class="card shadow-sm">
+                            <div class="card mb-5 box-shadow">
+                                <div class="card-header">
+                                    <h3 class="card-title pricing-card-title">{{ object.title }}</h3>
                                 </div>
-                                <div class="card-footer">Просмотров {{object.view_count}} </div>
+                                <div class="card-body">
+                                    <p class="card-text">{{ object.text }}</p>
+                                    <p class="card-text">Опубликовано: {{ object.published }}</p>
+
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        {% if user.is_staff %}
+                                        <div class="btn-group">
+                                            <a href="{% url 'blog:update' object.pk %}">
+                                                <button type="button" class="btn btn-sm btn-outline-secondary">Update
+                                                </button>
+                                            </a>
+                                            <a href="{% url 'blog:delete' object.pk %}">
+                                                <button type="button" class="btn btn-sm btn-outline-secondary">Delete
+                                                </button>
+                                            </a>
+                                        </div>
+                                        {% endif %}
+                                        <small class="text-body-secondary">{{object.creation_date}}</small>
+                                    </div>
+                                    <div class="card-footer">Просмотров {{object.view_count}}</div>
+                                </div>
                             </div>
+
                         </div>
 
                     </div>
-
-                </div>
-                <div class="col-6">
-                    <img src="{{ object.image|mediapath }}" width="600"/>
+                    <div class="col-6">
+                        <img src="{{ object.image|mediapath }}" width="600"/>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
 </main>
 

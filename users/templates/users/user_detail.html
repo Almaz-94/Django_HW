@@ -1,4 +1,5 @@
 {% extends 'catalog/base.html' %}
+{% load tags_newsletter %}
 {% load my_tags_blog %}
 {% block content %}
 
@@ -11,24 +12,32 @@
                         <div class="card shadow-sm">
                             <div class="card mb-5 box-shadow">
                                 <div class="card-header">
+                                    {% if object.is_superuser %}
+                                    <h3 class="card-title pricing-card-title">Администратор</h3>
+                                    {% endif %}
                                     <h3 class="card-title pricing-card-title">{{ object.email }}</h3>
                                 </div>
                                 <div class="card-body">
-                                    <p class="card-text">Code: {{ object.verification_code }}</p>
-
-                                    <p class="card-text">Verified: {{ object.is_active }}</p>
-                                    <p class="card-text">Can add Product: {{ perms.catalog.add_product }}</p>
-                                    <p class="card-text">Can update Product: {{ perms.catalog.change_product }}</p>
-                                    <p class="card-text">Can delete Product: {{ perms.catalog.delete_product }}</p>
+                                    <p class="card-text">Телефон: {{ object.phone }}</p>
+                                    <p class="card-text">Страна проживания: {{ object.country }}</p>
+                                    <p class="card-text">Код верификации: {{ object.verification_code }}</p>
+                                    <p class="card-text">Профиль активен: {{ object.is_active }}</p>
                                     <div class="d-flex justify-content-between align-items-center">
-
-
                                     </div>
-
                                 </div>
                                 <div class="card-footer">
+                                    {% if request.user.email == object.email %}
                                     <a href="{% url 'users:generate_new_password' %}" class="btn btn-danger">Сменить
                                         пароль</a>
+                                    <a href="{% url 'users:profile_update' object.pk %}"
+                                       class="btn btn-primary">Изменить</a>
+                                    {% endif %}
+                                    {% if request.user|has_group:'managers' and not object.is_superuser %}
+                                        <a href="{% url 'users:ban_user' object.pk %}"
+                                           class="btn btn-danger">Заблокировать</a>
+                                    {% endif %}
+
+
                                 </div>
                             </div>
 
