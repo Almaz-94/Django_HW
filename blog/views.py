@@ -1,5 +1,6 @@
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import CreateView,DetailView,DeleteView,UpdateView,ListView
+from django.views.generic import CreateView, DetailView, DeleteView, UpdateView, ListView
 from blog.models import BlogPost
 from django.urls import reverse_lazy, reverse
 from pytils.templatetags.pytils_translit import slugify
@@ -21,6 +22,7 @@ class BlogpostCreateView(LoginRequiredMixin, CreateView):
 class BlogpostUpdateView(UserPassesTestMixin, UpdateView):
     model = BlogPost
     fields = ('title', 'text', 'published', 'image')
+
     # success_url = reverse_lazy('blog:list')
 
     def form_valid(self, form):
@@ -42,8 +44,9 @@ class BlogpostListView(ListView):
 
     def get_queryset(self, *args, **kwargs):
         queryset = super().get_queryset(*args, **kwargs)
-        queryset = queryset.filter(published = True)
+        queryset = queryset.filter(published=True)
         return queryset
+
 
 class BlogpostDetailView(DetailView):
     model = BlogPost
@@ -53,6 +56,7 @@ class BlogpostDetailView(DetailView):
         self.object.view_count += 1
         self.object.save()
         return self.object
+
 
 class BlogpostDeleteView(LoginRequiredMixin, DeleteView):
     model = BlogPost

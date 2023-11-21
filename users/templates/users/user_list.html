@@ -3,29 +3,39 @@
 {% block content %}
 <div class="container" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
     <div class="row text-center">
-        <div class="col-6">
-            <h1 class="my-0 font-weight-normal">Сервис для создания рассылок</h1>
+
+        <div class="col-12">
             <div class="card mb-5 box-shadow">
                 <div class="card-header">
                     <h3 class="card-title pricing-card-title">Зарегистрированные пользователи</h3>
                 </div>
-                {% for object in object_list %}
-                <div class="card-body">
+                <div class="container">
+                    <div class="row">
+                        {% for object in object_list %}
+                        <div class="col-6">
+                            <div class="card mb-4 box-shadow">
+                                <div class="card-body">
 
-                    <ul class="list-unstyled mt-3 mb-4 text-start m-4">
-                        <li><a class="text-muted" href="{% url 'users:profile' object.pk %}">
-                            {{ object.email }}</a>
-                        </li>
-                    </ul>
+                                    <ul class="list-unstyled mt-3 mb-4 text-start m-4">
+                                        <li><a class="text-muted" href="{% url 'users:profile' object.pk %}">
+                                            {{ object.email }}</a>
+                                        </li>
+                                    </ul>
 
-
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
                 </div>
-                {% endfor %}
             </div>
 
+
         </div>
+        <div>
 
+        </div>
     </div>
-
-
-    {% endblock %}
+</div>
+</div>
+{% endblock %}

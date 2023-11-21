@@ -28,41 +28,30 @@
                         <div class="card shadow-sm">
                             <div class="card mb-5 box-shadow">
                                 <div class="card-header">
-                                    <h3 class="card-title pricing-card-title">Рассылка №{{ object.pk }}</h3>
+                                    <h3 class="card-title pricing-card-title">Письмо №{{ object.pk }}</h3>
                                 </div>
                                 <div class="card-body">
 
                                     <p class="card-text">Автор: {{ object.creator.email }}</p>
-                                    <p class="card-text">Начало: {{ object.start }}</p>
-                                    <p class="card-text">Конец: {{ object.end }}</p>
-                                    <p class="card-text">Клиенты рассылки:</p>
-                                    {% for obj in object.client.all %}
-                                    <p class="card-text">{{ obj.email }}</p>
-                                    {% endfor %}
-                                    <p class="card-text">Состояние: {{ object.status }}</p>
-                                    <p class="card-text">Содержание: {{ object.letter }}</p>
+                                    <p class="card-text">Тема: {{ object.head }}</p>
+                                    <p class="card-text">Текст письма: {{ object.body }}</p>
+
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="btn-group">
                                             {% if user == object.creator %}
-                                            <a href="{% url 'newsletter:update' object.pk %}">
+                                            <a href="{% url 'newsletter:update_letter' object.pk %}">
                                                 <button type="button" class="btn btn-sm btn-outline-secondary">Update
                                                 </button>
                                             </a>
-                                            <a href="{% url 'newsletter:delete' object.pk %}">
+                                            <a href="{% url 'newsletter:delete_letter' object.pk %}">
                                                 <button type="button" class="btn btn-sm btn-outline-secondary">Delete
                                                 </button>
                                             </a>
                                             {% endif %}
 
-                                            {% if user|has_group:"managers" %}
-                                            <a href="{% url 'newsletter:manager_update_news' object.pk %}"></a>
-                                                <button type="button" class="btn btn-sm btn-outline-secondary">
-                                                    Deactivate
-                                                </button>
 
-                                                {% endif %}
                                         </div>
-                                        <small class="text-body-secondary">Периодичность {{object.period}} дней</small>
+
                                     </div>
 
                                 </div>

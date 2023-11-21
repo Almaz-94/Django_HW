@@ -1,0 +1,65 @@
+{% extends 'catalog/base.html' %}
+{% load tags_newsletter %}
+{% block content %}
+<div class="container" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+    <div class="row text-center">
+        <div class="col-12">
+            <div class="card mb-5 box-shadow">
+                <div class="card-header">
+                    <h3 class="card-title pricing-card-title">Адресаты Ваших рассылок</h3>
+
+
+
+                    <a class="btn btn-primary" href="{% url 'newsletter:create_client' %}">Создать адресата</a>
+                    <a class="btn btn-primary" href="{% url 'newsletter:list' %}">Список рассылок</a>
+                    <a class="btn btn-primary" href="{% url 'newsletter:letter_list' %}">Список писем</a>
+                    {% if user|has_group:'managers' %}
+                    <a class="btn btn-success" href="{% url 'users:user_list' %}">Зарегистрированные пользователи</a>
+                    {% endif %}
+                </div>
+
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Автор</th>
+                            <th scope="col">Имя</th>
+                            <th scope="col">Почта</th>
+                            <th scope="col"></th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for object in object_list %}
+                        <tr>
+                            <th scope="row">{{ object.pk }}</th>
+                            <td>{{ object.creator }}</td>
+                            <td>{{ object.name }}</td>
+
+                            <td>{{ object.email }}</td>
+                            <td>
+
+                                <a href="{% url 'newsletter:update_client' object.pk %}">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Update</button>
+                                </a>
+                                <a href="{% url 'newsletter:delete_client' object.pk %}">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Delete</button>
+                                </a>
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+                        </tbody>
+
+
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

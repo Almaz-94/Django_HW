@@ -11,48 +11,66 @@
                     <h3 class="card-title pricing-card-title">Лента</h3>
 
                     <a class="btn btn-primary" href="{% url 'newsletter:create' %}">Создать рассылку</a>
+                    <a class="btn btn-primary" href="{% url 'newsletter:create_letter' %}">Создать письмо</a>
+                    <a class="btn btn-primary" href="{% url 'newsletter:create_client' %}">Создать адресата</a>
+                    <a class="btn btn-primary" href="{% url 'newsletter:letter_list' %}">Список писем</a>
+                    <a class="btn btn-primary" href="{% url 'newsletter:client_list' %}">Список адресатов</a>
+
                     {% if user|has_group:'managers' %}
-                    <a class="btn btn-primary" href="{% url 'users:user_list' %}">Список авторов рассылок</a>
+                    <a class="btn btn-success" href="{% url 'users:user_list' %}">Зарегистрированные пользователи</a>
                     {% endif %}
                 </div>
-                {% for object in object_list %}
+
                 <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Создатель</th>
+                            <th scope="col">Начало рассылки</th>
+                            <th scope="col">Конец рассылки</th>
+                            <th scope="col">Количество клиентов</th>
+                            <th scope="col">Письмо</th>
+                            <th scope="col"></th>
+                        </tr>
+                        </thead>
 
-                    <ul class="list-unstyled mt-3 mb-4 text-start m-4">
-                        <li><a class="text-muted" href="{% url 'newsletter:read' object.pk %}">
-                            Рассылка №{{ object.pk }}</a>
-                        </li>
-                    </ul>
-                    <div class="btn-group">
+                        <tbody>
+                        {% for object in object_list %}
+                        <tr>
+                            <th scope="row">{{ object.pk }}</th>
+                            <td>{{ object.creator.email }}</td>
+                            <td>{{ object.start }}</td>
+                            <td>{{ object.end }}</td>
+                            <td>{{ object.client.count }}</td>
+                            <td>{{ object.letter.head }}</td>
+                            <td>{% if user|has_group:"managers" or user == object.creator %}
+                                <a href="{% url 'newsletter:read' object.pk %}">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                </a>
+                                {% endif %}
+                                {% if user|has_group:"managers" %}
+                                <a href="{% url 'newsletter:manager_update_news' object.pk %}">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">
+                                        {% if object.is_active %}
+                                        Deactivate
+                                        {% else %}
+                                        Activate
+                                        {% endif %}
+                                    </button>
+                                </a>
 
-                        <a href="{% url 'newsletter:read' object.pk %}">
-                            <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                        </a>
-                        {% if user|has_group:"managers" %}
-                            <a href="{% url 'newsletter:manager_update_news' object.pk %}">
-                                <button type="button" class="btn btn-sm btn-outline-secondary">
-                                    {% if object.is_active %}
-                                    Deactivate
-                                    {% else %}
-                                    Activate
-                                    {% endif %}
-                                </button></a>
-                        {% endif %}
-                        {% if user == object.creator %}
-                            <a href="{% url 'newsletter:update' object.pk %}">
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Update</button>
-                            </a>
-                            <a href="{% url 'newsletter:delete' object.pk %}">
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Delete</button>
-                            </a>
+                                {% endif %}
+
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+                        </tbody>
 
 
-                        {% endif %}
-
-                    </div>
-
+                    </table>
                 </div>
-                {% endfor %}
             </div>
 
         </div>
@@ -60,4 +78,4 @@
     </div>
 
 </div>
-    {% endblock %}
+{% endblock %}

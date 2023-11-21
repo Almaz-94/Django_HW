@@ -8,7 +8,6 @@ class NewsletterConfig(AppConfig):
     def ready(self):
         from newsletter.models import Newsletter
         for obj in Newsletter.objects.all():
-            if obj.is_active:
-                obj.send_mail_periodically()
+            obj.send_mail_periodically()
 
 

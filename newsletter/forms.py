@@ -1,5 +1,5 @@
 from django import forms
-from newsletter.models import Newsletter
+from newsletter.models import Newsletter, Letter, Client
 
 
 class StyleFormMixin:
@@ -22,3 +22,15 @@ class ManagerNewsletterForm(StyleFormMixin, forms.ModelForm):
         model = Newsletter
         fields = ('is_active',)
 
+
+class LetterForm(StyleFormMixin, forms.ModelForm):
+
+    class Meta:
+        model = Letter
+        fields = ('head', 'body', )
+
+class ClientForm(StyleFormMixin, forms.ModelForm):
+
+    class Meta:
+        model = Client
+        fields = ('name', 'email', 'comment',)

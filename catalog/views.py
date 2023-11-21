@@ -9,8 +9,9 @@ from catalog.models import Product, Category
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from catalog.forms import ProductForm, ProductFormManagers
-from catalog.services import get_category_list
+from catalog.services import get_category_list, get_random_blogposts
 from newsletter.models import Newsletter, Client
+from newsletter.service import get_cached_clients_list
 
 
 class ProductListView(LoginRequiredMixin, ListView):
@@ -19,11 +20,12 @@ class ProductListView(LoginRequiredMixin, ListView):
 
 
 def main_page(request):
+
     context = {
-        'blogpost_random3': random.sample(list(BlogPost.objects.all()), k=3),
+        'blogpost_random': get_random_blogposts(3),
         'newsletter': Newsletter.objects.all,
         'active_newsletter': Newsletter.objects.filter(is_active=True),
-        'unique_client': Client.objects.all()
+        'unique_client': get_cached_clients_list()
     }
     return render(request, 'catalog/home.html', context)
 

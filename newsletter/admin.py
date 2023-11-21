@@ -26,5 +26,5 @@ class ClientAdmin(admin.ModelAdmin):
 
 @admin.register(NLLogs)
 class NLLogs(admin.ModelAdmin):
-    readonly_fields = ('last_try', 'server_response')#,'status')
-    list_display = ('newsletter',)
+    readonly_fields = ('last_try', 'status')
+    list_display = ('newsletter', 'last_try', 'status',)
